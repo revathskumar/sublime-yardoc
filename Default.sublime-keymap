@@ -1,3 +1,8 @@
 [
-  { "keys": ["ctrl+enter"], "command": "yardoc"}
+  { "keys": ["ctrl+enter"], "command": "yardoc"},
+  { "keys": ["enter"], "command": "addhashtag", "context":
+    [
+      { "key": "preceding_text", "operator": "regex_contains", "operand": "^[ ]+\\#", "match_all": false }
+    ]
+  }
 ]

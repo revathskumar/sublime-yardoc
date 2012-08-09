@@ -52,3 +52,13 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         next_line = self.view.line(point)
         return self.view.substr(next_line)
+
+
+class AddhashtagCommand(YardocCommand):
+    def run(self, edit):
+        point = self.view.sel()[0].end()
+        current_line = self.read_line(point)
+        indent = re.search('(^ *)', current_line).group(0)
+        line = "\r\n" + indent + "# "
+        self.view.insert(edit, point, line)
+
