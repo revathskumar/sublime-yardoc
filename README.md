@@ -31,6 +31,8 @@ results
 
     end
 
+![Method yardoc](https://lh6.googleusercontent.com/-MJw_xt1bo8s/UCNUwckhmoI/AAAAAAAAGaI/1hy2orZbpgk/s320/method-yardoc.gif)
+
 Pressing **ctrl+enter** on the previous line of class definition
 
     class Hello
