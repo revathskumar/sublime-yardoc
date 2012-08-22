@@ -1,7 +1,37 @@
+"""
+Sublime Yardoc
+by Revath S Kumar
+https://github.com/revathskumar/sublime-yardoc
+"""
 import sublime_plugin
 import re
 
 class YardocCommand(sublime_plugin.TextCommand):
+    def counter(self):
+        count = 0
+        while True:
+            count += 1
+            yield(count)
+
+    def setTabIndex(self, doc):
+        if doc:
+            tabIndex = self.counter()
+            for index, outputLine in enumerate(doc):
+                doc[index] = re.sub("(\\$\\{)\\d+(:[^}]+\\})", lambda m: "%s%d%s" % (m.group(1), tabIndex.next(), m.group(2)), outputLine)
+        return doc
+
+    def write(self, view, str):
+        view.run_command(
+            'move_to', {
+                'to': "bol"
+            }
+        )
+        view.run_command(
+            'insert_snippet', {
+                'contents': str
+            }
+        )
+
     def run(self, edit):
         point = self.view.sel()[0].end()
         scope = self.view.scope_name(point)
@@ -11,7 +41,7 @@ class YardocCommand(sublime_plugin.TextCommand):
         if not self.check_doc(point):
             return
         doc = self.compose_doc(line, edit)
-        self.view.insert(edit, point, doc)
+        self.write(self.view, doc)
 
     def check_doc(self,point):
         current_line = self.read_line(point)
@@ -25,21 +55,24 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         indent = re.search('(^ *)', current_line).group(0)
 
-        lines = ["%s# @param [] %s" % (indent, param) for param in params]
-        lines.insert(0, indent + "# ")
-        lines.append(indent + "# ")
-        lines.append(indent + "# @visibility public")
-        lines.append(indent + "# @return ")
+        method_name = re.search("def (?P<name>[a-zA-Z_]+|[a-zA-Z_]+[!|?])[(| ]", current_line).group("name")
+        lines = [indent+"# ", "# ${1:[%s description]}" % (method_name)]
 
-        return "\r\n" + "\r\n".join(lines)
+        for param in params:
+            lines.append("# @param  %s [${1:type}] ${1:[description]}" % (param))
+
+        lines.append("# ")
+        lines.append("# @return [${1:type}] ${1:[description]}")
+
+        lines = self.setTabIndex(lines)
+
+        return "\r\n" + ("\r\n"+indent).join(lines)
 
     def class_doc(self, params_match, current_line):
         indent = re.search('(^ *)', current_line).group(0)
-        lines = []
-        lines.insert(0, indent + "# ")
-        lines.append(indent + "# @author ")
-        lines.append(indent + "# ")
-        return "\r\n" + "\r\n".join(lines)
+        lines = [indent + "# ", "# @author ${1:[author]}","# "]
+        lines = self.setTabIndex(lines)
+        return "\r\n" + ("\r\n"+indent).join(lines)
 
     def compose_doc(self,current_line, edit):
         params_match = re.search('def +[^ (]+[ (]*([^)]*)\)?', current_line)
@@ -63,5 +96,5 @@ class AddhashtagCommand(YardocCommand):
         current_line = self.read_line(point)
         indent = re.search('(^ *)', current_line).group(0)
         line = "\r\n" + indent + "# "
-        self.view.insert(edit, point, line)
+        self.write(self.view, line)
 
