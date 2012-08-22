@@ -4,6 +4,9 @@ import re
 class YardocCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         point = self.view.sel()[0].end()
+        scope = self.view.scope_name(point)
+        if not re.search("source\\.ruby", scope):
+            return
         line = self.read_line(point + 1)
         if not self.check_doc(point):
             return
