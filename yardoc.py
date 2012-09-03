@@ -21,11 +21,11 @@ class YardocCommand(sublime_plugin.TextCommand):
         return doc
 
     def write(self, view, str):
-        view.run_command(
-            'move_to', {
-                'to': "bol"
-            }
-        )
+        # view.run_command(
+        #     'move_to', {
+        #         'to': "bol"
+        #     }
+        # )
         view.run_command(
             'insert_snippet', {
                 'contents': str
