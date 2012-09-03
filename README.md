@@ -14,24 +14,23 @@ Don't forget to keep updating it, though!
 
 Pressing **ctrl+enter** on the previous line of method definition
 
-    def hello a,b, c
+    def hello a, b
 
     end
 
 results
 
     #
-    # @param [] a
-    # @param [] b
-    # @param [] c
+    # [hello description]
+    # @param  a [type] [description]
+    # @param  b [type] [description]
     #
-    # @visibility public
-    # @return
-    def hello a, b, c
+    # @return [type] [description]
+    def hello a, b
 
     end
 
-![Method yardoc](https://lh6.googleusercontent.com/-MJw_xt1bo8s/UCNUwckhmoI/AAAAAAAAGaI/1hy2orZbpgk/s320/method-yardoc.gif)
+![Method yardoc](https://lh6.googleusercontent.com/-C9V-e0vzDq0/UERyoS0I4oI/AAAAAAAAG48/M2cptkMfmgA/s458/123.gif)
 
 Pressing **ctrl+enter** on the previous line of class definition
 
