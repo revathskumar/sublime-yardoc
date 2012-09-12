@@ -6,7 +6,7 @@
       { "key": "auto_complete_visible", "operator": "equal", "operand": false }
     ]
   },
-  { "keys": ["@"], "command": "run_macro_file", "args": {"file": "Packages/yardoc/yardoc-auto-complete.sublime-macro"}, "context":
+  { "keys": ["@"], "command": "run_macro_file", "args": {"file": "Packages/sublime-yardoc/yardoc-auto-complete.sublime-macro"}, "context":
     [
       { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
       { "key": "preceding_text", "operator": "regex_contains", "operand": "^(|[ ]+)\\#(|[ ]+)", "match_all": false },
