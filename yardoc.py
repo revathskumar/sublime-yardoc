@@ -50,7 +50,7 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         indent = re.search('(^ *)', current_line).group(0)
 
-        method_name = re.search("def (?P<name>[a-zA-Z_]+|[a-zA-Z_]+[!|?])[(| ]", current_line).group("name")
+        method_name = re.search("def (?P<name>[a-zA-Z_]+|[a-zA-Z_]+[!|?])(?P<params>[(| ][a-zA-Z,]+|)", current_line).group("name")
         lines = [indent+"# ", "# ${1:[%s description]}" % (method_name)]
 
         for param in params:
