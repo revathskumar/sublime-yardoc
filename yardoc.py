@@ -21,11 +21,6 @@ class YardocCommand(sublime_plugin.TextCommand):
         return doc
 
     def write(self, view, str):
-        # view.run_command(
-        #     'move_to', {
-        #         'to': "bol"
-        #     }
-        # )
         view.run_command(
             'insert_snippet', {
                 'contents': str
@@ -93,8 +88,9 @@ class YardocCommand(sublime_plugin.TextCommand):
 class AddhashtagCommand(YardocCommand):
     def run(self, edit):
         point = self.view.sel()[0].end()
-        current_line = self.read_line(point)
-        indent = re.search('(^ *)', current_line).group(0)
-        line = "\r\n" + indent + "# "
+        scope = self.view.scope_name(point)
+        if not re.search("source\\.ruby", scope):
+            return
+        line = "\r\n" + "# "
         self.write(self.view, line)
 
