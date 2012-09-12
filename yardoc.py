@@ -69,7 +69,13 @@ class YardocCommand(sublime_plugin.TextCommand):
 
     def class_doc(self, params_match, current_line):
         indent = re.search('(^ *)', current_line).group(0)
-        lines = [indent + "# ", "# @author ${1:[author]}","# "]
+        col = self.view.rowcol(self.view.sel()[0].end())[1]
+
+        if(col != 0):
+            indent = " " * (len(indent) - col)
+
+        lines = [indent+"# ", "# ${1:[ class description]}"]
+        lines.extend(["# ", "# @author ${1:[author]}", "# "])
         lines = self.setTabIndex(lines)
         return "\r\n" + ("\r\n"+indent).join(lines)
 
