@@ -4,9 +4,9 @@
 
 ### Without package manager
 
-Go to your Sublime Text 2 Packages directory and clone the repository using the command below:
+Go to your Sublime Text 2 **Packages** directory and clone the repository using the command below:
 
-    git clone git@github.com:revathskumar/sublime-yardoc.git
+    git clone git@github.com:revathskumar/sublime-yardoc.git yadoc
 
 Don't forget to keep updating it, though!
 
