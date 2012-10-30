@@ -2,7 +2,17 @@
 
 ### Installation
 
-### Without package manager
+### With Package Control
+The easiest way to install this is with [Package Control](http://wbond.net/sublime\_packages/package\_control).
+
+   * If you just went and installed Package Control, you probably need to restart Sublime Text 2    before doing this next bit.
+   * Bring up the Command Palette (Command+Shift+p on OS X, Control+Shift+p on Linux/Windows).
+   * Select "Package Control: Install Package" (it'll take a few seconds)
+   * Select Yardoc when the list appears.
+
+Package Control will automatically keep Yardoc up to date with the latest version.
+
+### Without Package Control
 
 Go to your Sublime Text 2 **Packages** directory and clone the repository using the command below:
 
