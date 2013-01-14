@@ -56,6 +56,17 @@ class YardocCommand(sublime_plugin.TextCommand):
             author = pwd.getpwuid(os.getuid()).pw_gecos.split(',')[0]
         return ["# ", "# @author " + author, "# "]
 
+    def line_ending(self):
+        ending = "\n"
+        if(self.view.line_endings() == "Windows"):
+            ending = "\r\n"
+        return ending
+
+    def format_lines(self, indent, lines):
+        ending = self.line_ending()
+        lines = self.setTabIndex(lines)
+        return ending + (ending + indent).join(lines)
+
     def method_doc(self, params_match, current_line):
         params = [p.strip() for p in params_match.group(1).split(',') if len(p.strip()) > 0]
 
@@ -74,9 +85,7 @@ class YardocCommand(sublime_plugin.TextCommand):
         lines.append("# ")
         lines.append("# @return [${1:type}] ${1:[description]}")
 
-        lines = self.setTabIndex(lines)
-
-        return "\n" + ("\n" + indent).join(lines)
+        return self.format_lines(indent, lines)
 
     def module_doc(self, current_line):
         indent = re.search('(^ *)', current_line).group(0)
@@ -87,8 +96,7 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         lines = [indent + "# ", "# ${1:[ module description]}"]
         lines.extend(self.get_author())
-        lines = self.setTabIndex(lines)
-        return "\n" + ("\n" + indent).join(lines)
+        return self.format_lines(indent, lines)
 
     def class_doc(self, params_match, current_line):
         indent = re.search('(^ *)', current_line).group(0)
@@ -99,8 +107,7 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         lines = [indent + "# ", "# ${1:[ class description]}"]
         lines.extend(self.get_author())
-        lines = self.setTabIndex(lines)
-        return "\n" + ("\n" + indent).join(lines)
+        return self.format_lines(indent, lines)
 
     def compose_doc(self, current_line, edit):
         params_match = re.search('def +[^ (]+[ (]*([^)]*)\)?', current_line)
