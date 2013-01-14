@@ -78,6 +78,18 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         return "\n" + ("\n" + indent).join(lines)
 
+    def module_doc(self, current_line):
+        indent = re.search('(^ *)', current_line).group(0)
+        col = self.view.rowcol(self.view.sel()[0].end())[1]
+
+        if(col != 0):
+            indent = " " * (len(indent) - col)
+
+        lines = [indent + "# ", "# ${1:[ module description]}"]
+        lines.extend(self.get_author())
+        lines = self.setTabIndex(lines)
+        return "\n" + ("\n" + indent).join(lines)
+
     def class_doc(self, params_match, current_line):
         indent = re.search('(^ *)', current_line).group(0)
         col = self.view.rowcol(self.view.sel()[0].end())[1]
@@ -97,6 +109,9 @@ class YardocCommand(sublime_plugin.TextCommand):
         params_match = re.search('class ', current_line)
         if params_match:
             return self.class_doc(params_match, current_line)
+        params_match = re.search('module ', current_line)
+        if params_match:
+            return self.module_doc(current_line)
 
     def read_line(self, point):
         if (point >= self.view.size()):
