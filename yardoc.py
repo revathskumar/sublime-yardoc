@@ -50,6 +50,12 @@ class YardocCommand(sublime_plugin.TextCommand):
             return True
         return False
 
+    def get_author(self):
+        author = "${1:[author]}"
+        if(sublime.platform() == "linux"):
+            author = pwd.getpwuid(os.getuid()).pw_gecos.split(',')[0]
+        return ["# ", "# @author " + author, "# "]
+
     def method_doc(self, params_match, current_line):
         params = [p.strip() for p in params_match.group(1).split(',') if len(p.strip()) > 0]
 
@@ -78,12 +84,9 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         if(col != 0):
             indent = " " * (len(indent) - col)
-        author = "${1:[author]}"
-        if(sublime.platform() == "linux"):
-            author = pwd.getpwuid(os.getuid()).pw_gecos.split(',')[0]
 
         lines = [indent + "# ", "# ${1:[ class description]}"]
-        lines.extend(["# ", "# @author " + author, "# "])
+        lines.extend(self.get_author())
         lines = self.setTabIndex(lines)
         return "\n" + ("\n" + indent).join(lines)
 
