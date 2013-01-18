@@ -11,7 +11,7 @@
     { "trigger" : "@deprecated","contents": "@deprecated ${1:[description]}"},
     { "trigger" : "@example","contents": "@example ${1:[description]}"},
     { "trigger" : "@note","contents": "@note ${1:[description]}"},
-    { "trigger" : "@option","contents": "@option ${1:name} [${2:type}] ${3:option_key} (${3:default_value}) ${4:[description]}"},
+    { "trigger" : "@option","contents": "@option ${1:name} [${2:type}] ${3:option_key} (${4:default_value}) ${5:[description]}"},
     { "trigger" : "@overload","contents": "@overload ${1:method}(${2:[parameters]})"},
     { "trigger" : "@param","contents": "@param [${1:type}] ${2:[description]}"},
     { "trigger" : "@private","contents": ""},
