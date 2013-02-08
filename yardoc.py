@@ -22,13 +22,13 @@ class YardocCommand(sublime_plugin.TextCommand):
         if doc:
             tabIndex = self.counter()
             for index, outputLine in enumerate(doc):
-                doc[index] = re.sub("(\\$\\{)\\d+(:[^}]+\\})", lambda m: "%s%d%s" % (m.group(1), tabIndex.next(), m.group(2)), outputLine)
+                doc[index] = re.sub("(\\$\\{)\\d+(:[^}]+\\})", lambda m: "%s%d%s" % (m.group(1),  tabIndex.next() if hasattr(tabIndex,'next') else next(tabIndex), m.group(2)), outputLine)
         return doc
 
     def write(self, view, str):
         view.run_command(
             'insert_snippet', {
-                'contents': str.decode('utf-8')
+                'contents': str.decode('utf-8') if hasattr(str, 'decode') else bytes(str, 'utf-8').decode('utf-8')
             }
         )
 
