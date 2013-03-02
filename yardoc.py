@@ -36,9 +36,11 @@ class YardocCommand(sublime_plugin.TextCommand):
         point = self.view.sel()[0].end()
         scope = self.view.scope_name(point)
         if not re.search("source\\.ruby", scope):
+            self.view.insert(edit, point, "\n")
             return
         line = self.read_line(point + 1)
         if not self.check_doc(point):
+            self.view.insert(edit, point, "\n")
             return
         doc = self.compose_doc(line, edit)
         self.write(self.view, doc)
@@ -133,6 +135,7 @@ class AddhashtagCommand(YardocCommand):
         point = self.view.sel()[0].end()
         scope = self.view.scope_name(point)
         if not re.search("source\\.ruby", scope):
+            self.view.insert(edit, point, "\n")
             return
         line = "\n" + "# "
         self.write(self.view, line)
