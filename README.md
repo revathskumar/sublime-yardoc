@@ -2,11 +2,21 @@
 
 ### Installation
 
-### Without package manager
+### With Package Control
+The easiest way to install this is with [Package Control](http://wbond.net/sublime\_packages/package\_control).
 
-Go to your Sublime Text 2 Packages directory and clone the repository using the command below:
+   * If you just went and installed Package Control, you probably need to restart Sublime Text 2    before doing this next bit.
+   * Bring up the Command Palette (Command+Shift+p on OS X, Control+Shift+p on Linux/Windows).
+   * Select "Package Control: Install Package" (it'll take a few seconds)
+   * Select Yardoc when the list appears.
 
-    git clone git@github.com:revathskumar/sublime-yardoc.git
+Package Control will automatically keep Yardoc up to date with the latest version.
+
+### Without Package Control
+
+Go to your Sublime Text 2 **Packages** directory and clone the repository using the command below:
+
+    git clone git@github.com:revathskumar/sublime-yardoc.git yardoc
 
 Don't forget to keep updating it, though!
 
@@ -14,24 +24,23 @@ Don't forget to keep updating it, though!
 
 Pressing **ctrl+enter** on the previous line of method definition
 
-    def hello a,b, c
+    def hello a, b
 
     end
 
 results
 
     #
-    # @param [] a
-    # @param [] b
-    # @param [] c
+    # [hello description]
+    # @param  a [type] [description]
+    # @param  b [type] [description]
     #
-    # @visibility public
-    # @return
-    def hello a, b, c
+    # @return [type] [description]
+    def hello a, b
 
     end
 
-![Method yardoc](https://lh6.googleusercontent.com/-MJw_xt1bo8s/UCNUwckhmoI/AAAAAAAAGaI/1hy2orZbpgk/s320/method-yardoc.gif)
+![Method yardoc](https://lh6.googleusercontent.com/-C9V-e0vzDq0/UERyoS0I4oI/AAAAAAAAG48/M2cptkMfmgA/s458/123.gif)
 
 Pressing **ctrl+enter** on the previous line of class definition
 
