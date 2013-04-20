@@ -3,7 +3,6 @@ Sublime Yardoc
 by Revath S Kumar
 https://github.com/revathskumar/sublime-yardoc
 """
-import sublime
 import sublime_plugin
 import re
 
@@ -20,7 +19,7 @@ class YardocCommand(sublime_plugin.TextCommand):
         if doc:
             tabIndex = self.counter()
             for index, outputLine in enumerate(doc):
-                doc[index] = re.sub("(\\$\\{)\\d+(:[^}]+\\})", lambda m: "%s%d%s" % (m.group(1),  tabIndex.next() if hasattr(tabIndex,'next') else next(tabIndex), m.group(2)), outputLine)
+                doc[index] = re.sub("(\\$\\{)\\d+(:[^}]+\\})", lambda m: "%s%d%s" % (m.group(1),  tabIndex.next() if hasattr(tabIndex, 'next') else next(tabIndex), m.group(2)), outputLine)
         return doc
 
     def write(self, view, str):
