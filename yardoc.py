@@ -6,8 +6,6 @@ https://github.com/revathskumar/sublime-yardoc
 import sublime
 import sublime_plugin
 import re
-import os
-import pwd
 
 
 class YardocCommand(sublime_plugin.TextCommand):
@@ -54,8 +52,6 @@ class YardocCommand(sublime_plugin.TextCommand):
 
     def get_author(self):
         author = "${1:[author]}"
-        if(sublime.platform() == "linux"):
-            author = pwd.getpwuid(os.getuid()).pw_gecos.split(',')[0]
         return ["# ", "# @author " + author, "# "]
 
     def line_ending(self):
@@ -139,4 +135,3 @@ class AddhashtagCommand(YardocCommand):
             return
         line = "\n" + "# "
         self.write(self.view, line)
-
