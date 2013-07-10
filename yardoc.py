@@ -24,7 +24,7 @@ class YardocCommand(sublime_plugin.TextCommand):
 
     def write(self, view, str):
         if None == str:
-            str = "\n"
+            str = self.line_ending()
         view.run_command(
             'insert_snippet', {
                 'contents': str.decode('utf-8') if hasattr(str, 'decode') else bytes(str, 'utf-8').decode('utf-8')
@@ -35,11 +35,11 @@ class YardocCommand(sublime_plugin.TextCommand):
         point = self.view.sel()[0].end()
         scope = self.view.scope_name(point)
         if not re.search("source\\.ruby", scope):
-            self.view.insert(edit, point, "\n")
+            self.view.insert(edit, point, self.line_ending())
             return
         line = self.read_line(point + 1)
         if not self.check_doc(point):
-            self.view.insert(edit, point, "\n")
+            self.view.insert(edit, point, self.line_ending())
             return
         doc = self.compose_doc(line, edit)
         self.write(self.view, doc)
@@ -131,8 +131,9 @@ class AddhashtagCommand(YardocCommand):
     def run(self, edit):
         point = self.view.sel()[0].end()
         scope = self.view.scope_name(point)
+        ending = self.line_ending()
         if not re.search("source\\.ruby", scope):
-            self.view.insert(edit, point, "\n")
+            self.view.insert(edit, point, ending)
             return
-        line = "\n" + "# "
+        line = ending + "# "
         self.write(self.view, line)
