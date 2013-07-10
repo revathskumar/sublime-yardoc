@@ -23,40 +23,67 @@ Don't forget to keep updating it, though!
 ### Usage
 
 Pressing **ctrl+enter** on the previous line of method definition
+```ruby
+def hello a, b
 
-    def hello a, b
-
-    end
+end
+```
 
 results
 
-    #
-    # [hello description]
-    # @param  a [type] [description]
-    # @param  b [type] [description]
-    #
-    # @return [type] [description]
-    def hello a, b
+```ruby
+#
+# [hello description]
+# @param  a [type] [description]
+# @param  b [type] [description]
+#
+# @return [type] [description]
+def hello a, b
 
-    end
+end
+```
 
 ![Method yardoc](https://lh6.googleusercontent.com/-C9V-e0vzDq0/UERyoS0I4oI/AAAAAAAAG48/M2cptkMfmgA/s458/123.gif)
 
 Pressing **ctrl+enter** on the previous line of class definition
 
-    class Hello
+```ruby
+class Hello
 
-    end
+end
+```
 
 results
 
-    #
-    # @author
-    #
-    class Hello
+```ruby
+#
+# @author
+#
+class Hello
 
-    end
+end
+```
 
 ### License
 
-Please see [licence](http://github.com/revathskumar/sublime-yardoc/blob/master/LICENSE)
+```
+The MIT License (MIT)
+Copyright (c) 2013 Revath S Kumar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in the 
+Software without restriction, including without limitation the rights to use, 
+copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the 
+Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS 
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
