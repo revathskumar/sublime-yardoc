@@ -23,6 +23,8 @@ class YardocCommand(sublime_plugin.TextCommand):
         return doc
 
     def write(self, view, str):
+        if None == str:
+            str = "\n"
         view.run_command(
             'insert_snippet', {
                 'contents': str.decode('utf-8') if hasattr(str, 'decode') else bytes(str, 'utf-8').decode('utf-8')
