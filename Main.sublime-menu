@@ -24,14 +24,14 @@
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/yardoc/Sublime-Yardoc.sublime-settings"
+                                    "file": "${packages}/yardoc/yardoc.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/Sublime-Yardoc.sublime-settings"
+                                    "file": "${packages}/User/yardoc.sublime-settings"
                                 },
                                 "caption": "Settings – User"
                             },

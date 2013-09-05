@@ -6,13 +6,14 @@ https://github.com/revathskumar/sublime-yardoc
 import sublime
 import sublime_plugin
 import re
+import os
 
 
 class YardocCommand(sublime_plugin.TextCommand):
 
     def load_config(self):
         self.settings = {}
-        settings = sublime.load_settings('Sublime-Yardoc.sublime-settings')
+        settings = sublime.load_settings('yardoc.sublime-settings')
         for setting in ['trailing_spaces', 'initial_empty_line']:
             if settings.get(setting) is None:
                 continue
@@ -37,12 +38,19 @@ class YardocCommand(sublime_plugin.TextCommand):
                 doc[index] = re.sub("(\\$\\{)\\d+(:[^}]+\\})", lambda m: "%s%d%s" % (m.group(1),  tabIndex.next() if hasattr(tabIndex, 'next') else next(tabIndex), m.group(2)), outputLine)
         return doc
 
-    def write(self, view, str, point):
+    def reset_cursor(self, point, force=False):
+        self.view.sel().clear()
+        if (self.view.rowcol(point)[0] == self.view.rowcol(point + 1)[0]) or force:
+            self.view.sel().add(sublime.Region(self.point - 1))
+        else:
+            self.view.sel().add(sublime.Region(self.point))
+
+    def write(self, view, str):
         if None == str:
             str = self.line_ending()
-        self.view.sel().clear()
-        self.view.sel().add(point)
-        self.view.run_command(
+        else:
+            str = self.line_ending() + str
+        view.run_command(
             'insert_snippet', {
                 'contents': str.decode('utf-8') if hasattr(str, 'decode') else bytes(str, 'utf-8').decode('utf-8')
             }
@@ -51,27 +59,38 @@ class YardocCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         self.load_config()
         point = self.view.sel()[0].end()
+        self.point = self.view.text_point(self.view.rowcol(point)[0],0)
         scope = self.view.scope_name(point)
         if not re.search("source\\.ruby", scope):
             self.view.insert(edit, point, self.line_ending())
             return
-        line = self.read_line(point)
-        if not self.check_doc(line):
+        if not self.check_doc(self.point):
             self.view.insert(edit, point, self.line_ending())
             return
+        line = self.read_line(point + 1)
         doc = self.compose_doc(line, edit)
-        point = self.view.line(point).begin()
-        self.view.insert(edit, point, self.line_ending())
-        self.write(self.view, doc, point)
+        self.reset_cursor(point)
+        if None == doc:
+            # we were maybe at the end of a valid line, run it here again
+            line = self.read_line(point)
+            doc = self.compose_doc(line, edit)
+            self.reset_cursor(point,True)
 
-    def check_doc(self, line):
-        params_match = re.search('#\s+@return |#\s+@param |#\s+@author |# ?|#\s+@', line)
+        self.write(self.view, doc)
+
+    def check_doc(self, point):
+        current_line = self.read_line(point)
+        params_match = re.search('#\s+@return |#\s+@param |#\s+@author |# ?|#\s+@', current_line)
         if not params_match:
             return True
         return False
 
     def get_author(self):
-        author = "${1:[author]}"
+        if os.name == 'nt':
+            username = os.environ['USERNAME']
+        else:
+            username = os.environ['USER']
+        author = "${1:[" + username + "]}"
         return ["#" + self.trailing_spaces, "# @author " + author, "#" + self.trailing_spaces]
 
     def line_ending(self):
@@ -85,10 +104,8 @@ class YardocCommand(sublime_plugin.TextCommand):
         lines = self.set_tab_index(lines)
         return indent + (ending + indent).join(lines)
 
-    def method_doc(self, params_match, current_line):
+    def method_doc(self, params_match, current_line, indent):
         params = [p.strip() for p in params_match.group(1).split(',') if len(p.strip()) > 0]
-
-        indent = re.search('(^\s*)', current_line).group(0)
 
         # includes all operator methods as per http://stackoverflow.com/a/10542599/120818
         method_name = re.search("def (?P<name>[a-zA-Z_][a-zA-Z_0-9]+[!?=]?|~|\+|\*\*|-|\*|/|%|<<|>>|&|\||\^|<=>|<|<=|=>|>|==|===|!=|=~|!~|!|\[\]=|\[\])", current_line).group("name")
@@ -105,9 +122,7 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         return self.format_lines(indent, lines)
 
-    def module_doc(self, current_line):
-        indent = re.search('(^\s*)', current_line).group(0)
-
+    def module_doc(self, current_line, indent):
         lines = []
         if(self.settings.get('initial_empty_line')):
             lines.append("#" + self.trailing_spaces)
@@ -115,9 +130,7 @@ class YardocCommand(sublime_plugin.TextCommand):
         lines.extend(self.get_author())
         return self.format_lines(indent, lines)
 
-    def class_doc(self, params_match, current_line):
-        indent = re.search('(^\s*)', current_line).group(0)
-
+    def class_doc(self, params_match, current_line, indent):
         lines = []
         if(self.settings.get('initial_empty_line')):
             lines.append("#" + self.trailing_spaces)
@@ -126,15 +139,21 @@ class YardocCommand(sublime_plugin.TextCommand):
         return self.format_lines(indent, lines)
 
     def compose_doc(self, current_line, edit):
+        indent = re.search('(^\s*)', current_line).group(0)
+        col = self.view.rowcol(self.point)[1]
+        if(col != 0):
+            indent = " " * (len(indent) - col)
+        # indent = ""
+
         params_match = re.search('def +[^ (]+[ (]*([^)]*)\)?', current_line)
         if params_match:
-            return self.method_doc(params_match, current_line)
+            return self.method_doc(params_match, current_line, indent)
         params_match = re.search('class ', current_line)
         if params_match:
-            return self.class_doc(params_match, current_line)
+            return self.class_doc(params_match, current_line, indent)
         params_match = re.search('module ', current_line)
         if params_match:
-            return self.module_doc(current_line)
+            return self.module_doc(current_line, indent)
 
     def read_line(self, point):
         if (point >= self.view.size()):
@@ -146,11 +165,14 @@ class YardocCommand(sublime_plugin.TextCommand):
 
 class AddhashtagCommand(YardocCommand):
     def run(self, edit):
+        self.load_config()
         point = self.view.sel()[0].end()
         scope = self.view.scope_name(point)
         ending = self.line_ending()
         if not re.search("source\\.ruby", scope):
             self.view.insert(edit, point, ending)
             return
-        line = ending + "# "
-        self.write(self.view, line, point)
+        # not using the trailing_spaces option here because in most doc writing
+        # it will be desired on the next line
+        line = "# "
+        self.write(self.view, line)
