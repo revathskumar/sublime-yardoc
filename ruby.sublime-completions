@@ -13,7 +13,7 @@
     { "trigger" : "@note","contents": "@note ${1:[description]}"},
     { "trigger" : "@option","contents": "@option ${1:name} [${2:type}] ${3:option_key} (${4:default_value}) ${5:[description]}"},
     { "trigger" : "@overload","contents": "@overload ${1:method}(${2:[parameters]})"},
-    { "trigger" : "@param","contents": "@param [${1:type}] ${2:[description]}"},
+    { "trigger" : "@param","contents": "@param  ${1:name} [${2:type}] ${3:[description]}"},
     { "trigger" : "@private","contents": ""},
     { "trigger" : "@raise","contents": "@raise [${1:type}] ${2:[description]}"},
     { "trigger" : "@return","contents": "@return [${1:type}] ${2:[description]}"},
