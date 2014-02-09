@@ -23,6 +23,16 @@
     { "trigger" : "@version","contents": "@version ${1:[description]}"},
     { "trigger" : "@yield","contents": "@yield [${1:[parameters]}] ${2:[description]}"},
     { "trigger" : "@yieldparam","contents": "@yieldparam ${1:name} [${2:type}] ${3:[description]}"},
-    { "trigger" : "@yieldreturn","contents": "@yieldreturn [${1:type}] ${2:[description]}"}
+    { "trigger" : "@yieldreturn","contents": "@yieldreturn [${1:type}] ${2:[description]}"},
+
+    // Directives
+    { "trigger" : "@attribute",  "contents": "@!attribute [${1:r|w|rw}] ${2:attribute_name}"},
+    { "trigger" : "@endgroup",   "contents": "@!endgroup"},
+    { "trigger" : "@group",      "contents": "@!group ${1:description}"},
+    { "trigger" : "@macro",      "contents": "@!macro [${1:attach|new}] ${2:[optional_name]}"},
+    { "trigger" : "@method",     "contents": "@!method ${1:method_signature(parameters)}"},
+    { "trigger" : "@parse",      "contents": "@!parse [${1:language}] ${2:code}"},
+    { "trigger" : "@scope",      "contents": "@!scope ${1:class|instance}"},
+    { "trigger" : "@visibility", "contents": "@!visibility ${1:public|protected|private}"}
   ]
 }
