@@ -14,7 +14,7 @@ class YardocCommand(sublime_plugin.TextCommand):
     def load_config(self):
         self.settings = {}
         settings = sublime.load_settings('yardoc.sublime-settings')
-        for setting in ['trailing_spaces', 'initial_empty_line']:
+        for setting in ['trailing_spaces', 'initial_empty_line', 'trailing_empty_line']:
             if settings.get(setting) is None:
                 continue
             self.settings[setting] = settings.get(setting)
@@ -119,6 +119,8 @@ class YardocCommand(sublime_plugin.TextCommand):
 
         lines.append("#" + self.trailing_spaces)
         lines.append("# @return [${1:type}] ${1:[description]}")
+        if(self.settings.get('trailing_empty_line')):
+            lines.append("#" + self.trailing_spaces)
 
         return self.format_lines(indent, lines)
 
@@ -128,6 +130,8 @@ class YardocCommand(sublime_plugin.TextCommand):
             lines.append("#" + self.trailing_spaces)
         lines.append("# ${1:[ module description]}")
         lines.extend(self.get_author())
+        if(self.settings.get('trailing_empty_line')):
+            lines.append("#" + self.trailing_spaces)
         return self.format_lines(indent, lines)
 
     def class_doc(self, params_match, current_line, indent):
@@ -136,6 +140,8 @@ class YardocCommand(sublime_plugin.TextCommand):
             lines.append("#" + self.trailing_spaces)
         lines.append("# ${1:[ class description]}")
         lines.extend(self.get_author())
+        if(self.settings.get('trailing_empty_line')):
+            lines.append("#" + self.trailing_spaces)
         return self.format_lines(indent, lines)
 
     def compose_doc(self, current_line, edit):
