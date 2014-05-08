@@ -34,8 +34,8 @@ results
 ```ruby
 #
 # [hello description]
-# @param  a [type] [description]
-# @param  b [type] [description]
+# @param a [type] [description]
+# @param b [type] [description]
 #
 # @return [type] [description]
 def hello a, b
