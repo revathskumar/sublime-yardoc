@@ -115,7 +115,7 @@ class YardocCommand(sublime_plugin.TextCommand):
         lines.append("# ${1:[%s description]}" % (method_name))
 
         for param in params:
-	     lines.append("# @param %s [${1:type}] ${1:[description]}" % (param))
+            lines.append("# @param %s [${1:type}] ${1:[description]}" % (param))
 
         lines.append("#" + self.trailing_spaces)
         lines.append("# @return [${1:type}] ${1:[description]}")
