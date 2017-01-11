@@ -2,5 +2,7 @@
     // Determines if empty comment lines have a trailing space
     "trailing_spaces": true,
     // Add an initial empty line at the beginning of the comment
-    "initial_empty_line": true
+    "initial_empty_line": true,
+    // Add an empty line at the end of the comment
+    "trailing_empty_line": false
 }
